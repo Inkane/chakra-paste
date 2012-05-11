@@ -1,6 +1,7 @@
+#!/usr/bin/env python2
 from  __future__ import print_function
 
-__all__ = ["get_archive", "get_latest_paste_id", "paste_text"]
+__version__ = "0.1"
 
 import json
 import contextlib
