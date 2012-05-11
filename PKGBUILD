@@ -13,7 +13,7 @@ pkgrel=1
 pkgdesc="Allows to upload text files to paste.chakra-project.org"
 arch=("any")
 url="https://github.com/Inkane/chakra-paste"
-license=('GPL')
+license=('BSD')
 makedepends=('git')
 
 _gitroot="git://github.com/Inkane/chakra-paste.git"
@@ -37,12 +37,11 @@ build() {
   git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
   cd "$srcdir/$_gitname-build"
 
-  #
-  # BUILD HERE
-  #
 }
 
 package() {
+  cd "$srcdir"
+  python2 setup.py install --root="${pkgdir}"
 }
 
 # vim:set ts=2 sw=2 et:

@@ -12,6 +12,7 @@ var
 sdist
 develop-eggs
 .installed.cfg
+.ropeprojec
 
 # Installer logs
 pip-log.txt
