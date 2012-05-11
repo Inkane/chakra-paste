@@ -19,7 +19,7 @@ makedepends=('git')
 _gitroot="git://github.com/Inkane/chakra-paste.git"
 _gitname="chakra-paste"
 
-build() {
+package() {
   cd "$srcdir"
   msg "Connecting to GIT server...."
 
@@ -36,12 +36,8 @@ build() {
   rm -rf "$srcdir/$_gitname-build"
   git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
   cd "$srcdir/$_gitname-build"
-
-}
-
-package() {
-  cd "$srcdir"
   python2 setup.py install --root="${pkgdir}"
+
 }
 
 # vim:set ts=2 sw=2 et:
