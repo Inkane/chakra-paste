@@ -7,7 +7,8 @@ import json
 import contextlib
 import urllib
 import urllib2
-import sys
+import argparse
+import subprocess
 
 
 class Struct(dict):
@@ -59,7 +60,32 @@ def get_link_to_paste(id):
 def get_archive():
     return PASTE_BASE_URL + "all/"
 
+
+def main():
+    parser = argparse.ArgumentParser(description="Pastes some files to "
+            "paste.chakra.org and returns the URL to the paste")
+    parser.add_argument("file", nargs="*", help="the files which are uploaded")
+    parser.add_argument("--dmesg", help="upload the output of dmesg",
+            action="store_true")
+    parser.add_argument("--paclog", help="upload pacman.log",
+            action="store_true")
+    parser.add_argument("--pacconf", help="upload pacman.log",
+            action="store_true")
+    parser.add_argument("--version", "-v", action="version", version=__version__)
+    args = parser.parse_args()
+    if args.dmesg:
+        text = subprocess.check_output(["dmesg"])
+        print(paste_text(text))
+    if args.paclog:
+        with open("/var/log/pacman.log") as text:
+            print("pacman.log: ", paste_text(text.read()))
+    if args.pacconf:
+        with open("/etc/pacman.conf") as text:
+            print("pacman.conf: ", paste_text(text.read()))
+    for f in args.file:
+        # paste all files
+        with open(f) as text:
+            print(paste_text(text.read()))
+
 if __name__ == "__main__":
-    for files in sys.argv[1:]:
-        with open(files) as f:
-            print(paste_text(f.read()))
+    main()
