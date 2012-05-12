@@ -1,12 +1,5 @@
-# This is an example PKGBUILD file. Use this as a start to creating your own,
-# and remove these comments. For more information, see 'man PKGBUILD'.
-# NOTE: Please fill out the license field for your package! If it is unknown,
-# then please put 'unknown'.
+# Maintainer: Inkane <neoinkaneglade@aol.com> 
 
-# See http://wiki.archlinux.org/index.php/VCS_PKGBUILD_Guidelines
-# for more information on packaging from GIT sources.
-
-# Maintainer: Your Name <youremail@domain.com>
 pkgname="chakra-paste-git"
 pkgver=0.1
 pkgrel=1
