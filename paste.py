@@ -26,7 +26,7 @@ PASTE_SERVICE = "http://paste.chakra-project.org/api/json/all"
 PASTE_BASE_URL = "http://paste.chakra-project.org/"
 
 
-def paste_text(text, language="text", paste_expire=8640, paste_user="Chakra Bot",
+def paste_text(text, language="text", paste_expire=8640, paste_user="paste.py",
         return_link=True):
     """paste text to the pasteboard"""
     # costruct url
@@ -37,9 +37,13 @@ def paste_text(text, language="text", paste_expire=8640, paste_user="Chakra Bot"
             "paste_user": paste_user,
             "paste_expire": paste_expire
             }
-    with contextlib.closing(urllib2.urlopen(PASTE_BASE_URL, urllib.urlencode(data))) as query:
-        id = json.loads(query.read(), object_hook=Struct).result.id
-        return PASTE_BASE_URL + id if return_link else id
+    try:
+        with contextlib.closing(urllib2.urlopen(PASTE_BASE_URL, urllib.urlencode(data))) as query:
+            id = json.loads(query.read(), object_hook=Struct).result.id
+            return PASTE_BASE_URL + id if return_link else id
+    except urllib2.HTTPError as e:
+        print("Error uploading file:")
+        print(e.reason)
 
 
 def get_paste_list_json():
