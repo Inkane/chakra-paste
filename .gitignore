@@ -13,6 +13,7 @@ sdist
 develop-eggs
 .installed.cfg
 .ropeproject
+.ropeproject/*
 
 # Installer logs
 pip-log.txt
