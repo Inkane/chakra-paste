@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 from  __future__ import print_function
 
-__version__ = "0.1"
+__version__ = "0.2"
 
 import json
 import contextlib

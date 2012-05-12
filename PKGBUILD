@@ -2,7 +2,7 @@
 
 pkgname="chakra-paste-git"
 pkgver=0.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Allows to upload text files to paste.chakra-project.org"
 arch=("any")
 url="https://github.com/Inkane/chakra-paste"
