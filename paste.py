@@ -73,7 +73,7 @@ def main():
             action="store_true")
     parser.add_argument("--paclog", help="upload pacman.log",
             action="store_true")
-    parser.add_argument("--pacconf", help="upload pacman.log",
+    parser.add_argument("--pacconf", help="upload shortened pacman.log",
             action="store_true")
     parser.add_argument("--version", "-v", action="version", version=__version__)
     args = parser.parse_args()
@@ -82,7 +82,7 @@ def main():
         print(paste_text(text))
     if args.paclog:
         with open("/var/log/pacman.log") as text:
-            print("pacman.log: ", paste_text(text.read()))
+            print("pacman.log: ", paste_text(text.read()[-7000:]))
     if args.pacconf:
         with open("/etc/pacman.conf") as text:
             print("pacman.conf: ", paste_text(text.read()))
