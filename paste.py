@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 from  __future__ import print_function
 
-__version__ = "0.2"
+__version__ = "0.3"
 
 import json
 import contextlib
@@ -68,7 +68,8 @@ def get_archive():
 
 def main():
     parser = argparse.ArgumentParser(description="Pastes some files to "
-            "paste.chakra.org and returns the URL to the paste")
+            "paste.chakra.org and returns the URL to the paste", epilog="You "
+            "can also pipe text into paste.py like echo 'hi' | paste.py")
     parser.add_argument("file", nargs="*", help="the files which are uploaded")
     parser.add_argument("--dmesg", help="upload the output of dmesg",
             action="store_true")
@@ -86,6 +87,11 @@ def main():
             action="store_true")
     parser.add_argument("--version", "-v", action="version", version=__version__)
     args = parser.parse_args()
+
+    if not sys.stdin.isatty():
+        # check if text is piped in
+        print(paste_text(sys.stdin.read()))
+        sys.exit(0)
     if len(sys.argv) == 1:
         parser.print_help()
         sys.exit(1)
