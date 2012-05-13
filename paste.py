@@ -9,6 +9,7 @@ import urllib
 import urllib2
 import argparse
 import subprocess
+import sys
 
 
 class Struct(dict):
@@ -75,11 +76,35 @@ def main():
             action="store_true")
     parser.add_argument("--pacconf", help="upload shortened pacman.log",
             action="store_true")
+    parser.add_argument("--pacmir", help="upload the pacman mirror list",
+            action="store_true")
+    parser.add_argument("--instlog", help="upload the installation log file",
+            action="store_true")
+    parser.add_argument("--kernellog", help="upload the kernel log file",
+            action="store_true")
+    parser.add_argument("--bootlog", help="upload the boot log file",
+            action="store_true")
     parser.add_argument("--version", "-v", action="version", version=__version__)
     args = parser.parse_args()
+    if len(sys.argv) == 1:
+        parser.print_help()
+        sys.exit(1)
+
     if args.dmesg:
         text = subprocess.check_output(["dmesg"])
         print(paste_text(text))
+    if args.pacmir:
+        with open("/etc/pacman.d/mirrorlist") as text:
+            print("mirrorlist: ", paste_text(text.read()))
+    if args.instlog:
+        with open("/var/log/installation.log") as text:
+            print("installation.log: ", paste_text(text.read()))
+    if args.kernellog:
+        with open("/var/log/kernel.log") as text:
+            print("kernel.log: ", paste_text(text.read()))
+    if args.bootlog:
+        with open("/var/log/boot.log") as text:
+            print("boot.log: ", paste_text(text.read()))
     if args.paclog:
         with open("/var/log/pacman.log") as text:
             print("pacman.log: ", paste_text(text.read()[-7000:]))
@@ -90,6 +115,7 @@ def main():
         # paste all files
         with open(f) as text:
             print(paste_text(text.read()))
+    sys.exit(0)
 
 if __name__ == "__main__":
     main()
