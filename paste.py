@@ -85,6 +85,9 @@ def main():
             action="store_true")
     parser.add_argument("--bootlog", help="upload the boot log file",
             action="store_true")
+    parser.add_argument("-d", "--duration", help="set how long the file is stored"
+            " default is 8640 seconds", default=8640
+            )
     parser.add_argument("--version", "-v", action="version", version=__version__)
     args = parser.parse_args()
 
@@ -92,35 +95,35 @@ def main():
         # check if text is piped in
         print(paste_text(sys.stdin.read()))
         sys.exit(0)
-    if len(sys.argv) == 1:
-        parser.print_help()
-        sys.exit(1)
-
     if args.dmesg:
         text = subprocess.check_output(["dmesg"])
-        print(paste_text(text))
+        print(paste_text(text), paste_expire=args.duration)
     if args.pacmir:
         with open("/etc/pacman.d/mirrorlist") as text:
-            print("mirrorlist: ", paste_text(text.read()))
+            print("mirrorlist: ", paste_text(text.read(), paste_expire=args.duration))
     if args.instlog:
         with open("/var/log/installation.log") as text:
-            print("installation.log: ", paste_text(text.read()))
+            print("installation.log: ", paste_text(text.read(), paste_expire=args.duration))
     if args.kernellog:
         with open("/var/log/kernel.log") as text:
-            print("kernel.log: ", paste_text(text.read()))
+            print("kernel.log: ", paste_text(text.read(), paste_expire=args.duration))
     if args.bootlog:
         with open("/var/log/boot.log") as text:
-            print("boot.log: ", paste_text(text.read()))
+            print("boot.log: ", paste_text(text.read(), paste_expire=args.duration))
     if args.paclog:
         with open("/var/log/pacman.log") as text:
             print("pacman.log: ", paste_text(text.read()[-7000:]))
     if args.pacconf:
         with open("/etc/pacman.conf") as text:
-            print("pacman.conf: ", paste_text(text.read()))
+            print("pacman.conf: ", paste_text(text.read(), paste_expire=args.duration))
     for f in args.file:
         # paste all files
         with open(f) as text:
-            print(paste_text(text.read()))
+            print(paste_text(text.read(), paste_expire=args.duration))
+    if len(sys.argv) == 1:
+        parser.print_help()
+        sys.exit(1)
+
     sys.exit(0)
 
 if __name__ == "__main__":
