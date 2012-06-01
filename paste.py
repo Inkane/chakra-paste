@@ -27,6 +27,16 @@ PASTE_SERVICE = "http://paste.chakra-project.org/api/json/all"
 PASTE_BASE_URL = "http://paste.chakra-project.org/"
 
 
+def remove_color(text):
+    """Remove color codes from input text
+
+    :text: the text which should be converted
+    :returns: the text with stripped color codes
+
+    """
+    color_ref = r"\033\[\d*(;\d*)*m"
+
+
 def paste_text(text, language="text", paste_expire=8640, paste_user="paste.py",
         return_link=True):
     """paste text to the pasteboard"""
