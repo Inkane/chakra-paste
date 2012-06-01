@@ -4,6 +4,7 @@ from  __future__ import print_function
 __version__ = "0.3"
 
 import json
+import re
 import contextlib
 import urllib
 import urllib2
@@ -34,7 +35,8 @@ def remove_color(text):
     :returns: the text with stripped color codes
 
     """
-    color_ref = r"\033\[\d*(;\d*)*m"
+    color_reg = re.compile(r"\033\[\d*(;\d*)*m")
+    return re.sub(color_reg, "", text)
 
 
 def paste_text(text, language="text", paste_expire=8640, paste_user="paste.py",
@@ -98,12 +100,16 @@ def main():
     parser.add_argument("-d", "--duration", help="set how long the file is stored"
             " default is 8640 seconds", default=8640
             )
+    parser.add_argument("-bw", "--nocolor", help="removes color codes from the "
+            "input", action="store_true")
     parser.add_argument("--version", "-v", action="version", version=__version__)
     args = parser.parse_args()
 
+    rem_color = lambda t: remove_color(t) if args.nocolor else lambda t: t
+
     if not sys.stdin.isatty():
         # check if text is piped in
-        print(paste_text(sys.stdin.read()))
+        print(paste_text(rem_color(sys.stdin.read())))
         sys.exit(0)
     if args.dmesg:
         text = subprocess.check_output(["dmesg"])
@@ -129,7 +135,7 @@ def main():
     for f in args.file:
         # paste all files
         with open(f) as text:
-            print(paste_text(text.read(), paste_expire=args.duration))
+            print(paste_text(rem_color(text.read()), paste_expire=args.duration))
     if len(sys.argv) == 1:
         parser.print_help()
         sys.exit(1)
