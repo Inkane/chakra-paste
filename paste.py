@@ -105,7 +105,7 @@ def main():
     parser.add_argument("--version", "-v", action="version", version=__version__)
     args = parser.parse_args()
 
-    rem_color = lambda t: remove_color(t) if args.nocolor else (lambda t: lambda x: x)
+    rem_color = (lambda t: remove_color(t)) if args.nocolor else (lambda t: t)
 
     if not sys.stdin.isatty():
         # check if text is piped in
