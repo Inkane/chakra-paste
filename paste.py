@@ -113,7 +113,7 @@ def main():
         sys.exit(0)
     if args.dmesg:
         text = subprocess.check_output(["dmesg"])
-        print(paste_text(text), paste_expire=args.duration)
+        print(paste_text(text, paste_expire=args.duration))
     if args.pacmir:
         with open("/etc/pacman.d/mirrorlist") as text:
             print("mirrorlist: ", paste_text(text.read(), paste_expire=args.duration))
